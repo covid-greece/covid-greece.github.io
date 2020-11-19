@@ -34,31 +34,26 @@ class covid {
     }
   }
 
-  split_total_daily_data(arr, arr2 = []) {
-    for (var i = 1; i < arr.length +1; i++) {
-      arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].confirmed});
+  split_data(arr, arg1, arr2 = []) {
+    if (arg1 == "confirmed") {
+      for (var i = 1; i < arr.length +1; i++) {
+        arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].confirmed});
+      }
+    } else if (arg1 === "intensive_care") {
+      for (var i = 1; i < arr.length +1; i++) {
+        arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].intensive_care});
+      }
+    } else if (arg1 === "deaths") {
+      for (var i = 1; i < arr.length +1; i++) {
+        arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].deaths});
+      }
+    } else if (arg1 ==="region_en_name") {
+      for (var i = 1; i < arr.length +1; i++) {
+        arr2.push({y: arr[i-1].region_cases, label:arr[i-1].region_en_name});
+      }
     }
     return arr2;
   }
-  split_total_daily_data_2(arr, arr2 = []) {
-    for (var i = 1; i < arr.length +1; i++) {
-      arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].deaths});
-    }
-    return arr2;
-  }
-  split_total_daily_data_3(arr, arr2 = []) {
-    for (var i = 1; i < arr.length +1; i++) {
-      arr2.push({x: new Date(arr[i-1].date), y: arr[i-1].intensive_care});
-    }
-    return arr2;
-  }
-  split_total_daily_data_4(arr, arr2 = []) {
-    for (var i = 1; i < arr.length +1; i++) {
-      arr2.push({y: arr[i-1].region_cases, label:arr[i-1].region_en_name});
-    }
-    return arr2;
-  }
-
 
   day_data(arr, prev_arr, arr2 =[]) {
     var actualthis = this
@@ -389,7 +384,7 @@ window.onload = function () {
   covidInst.fetch('https://covid-19-greece.herokuapp.com/regions-history', async (data) => {
     this.regions = await data["regions-history"];
     this.regionsDaily = await this.per_day_data(this.regions);
-    state_Chart = this.stateChart("users-countries-bar-chart",this.split_total_daily_data_4(this.regions[this.regions.length-1].regions))
+    state_Chart = this.stateChart("users-countries-bar-chart",this.split_data(this.regions[this.regions.length-1].regions,"region_en_name"))
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/gender-distribution', async (data) => {
     this.gender_percentages = await data["gender_percentages"];
@@ -473,7 +468,7 @@ window.onload = function () {
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/intensive-care', async (data) => {
     this.cases = await data["cases"];
-    critical_chart = this.splineArea("daily-critical-infections-area-chart",this.split_total_daily_data_3(this.cases))
+    critical_chart = this.splineArea("daily-critical-infections-area-chart",this.split_data(this.cases,"intensive_care"))
     document.getElementById("daily-critical-infections").innerHTML = this.cases[this.cases.length-1].intensive_care;
     document.getElementById("daily-critical-infections-14").innerHTML = "Change 14 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-14].intensive_care)*10/10+"%";
     document.getElementById("daily-critical-infections-30").innerHTML = "Change 30 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-30].intensive_care)*10/10+"%";
@@ -509,10 +504,10 @@ window.onload = function () {
     document.getElementById("daily-deaths-14").innerHTML = "Change 14 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-14].deaths)*10/10+"%";
     document.getElementById("daily-deaths-30").innerHTML = "Change 30 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-30].deaths)*10/10+"%";
     //
-    total_inf = this.splineArea("total-infections-spline-area-chart",this.split_total_daily_data(this.all))
-    total_deaths = this.splineArea("total-deaths-spline-area-chart",this.split_total_daily_data_2(this.all))
-    daily_inf = this.splineArea("daily-infections-spline-area-chart",this.split_total_daily_data(this.allDaily))
-    daily_deaths = this.splineArea("daily-deaths-spline-area-chart",this.split_total_daily_data_2(this.allDaily))
+    total_inf = this.splineArea("total-infections-spline-area-chart",this.split_data(this.all,"confirmed"))
+    total_deaths = this.splineArea("total-deaths-spline-area-chart",this.split_data(this.all,"deaths"))
+    daily_inf = this.splineArea("daily-infections-spline-area-chart",this.split_data(this.allDaily,"confirmed"))
+    daily_deaths = this.splineArea("daily-deaths-spline-area-chart",this.split_data(this.allDaily,"deaths"))
   })
 
   $('.inview').one('inview', function (e, isInView) {
