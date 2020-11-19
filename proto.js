@@ -494,8 +494,11 @@ window.onload = function () {
     document.getElementById("total-deaths-30").innerHTML = "Change 30 days: " + Math.floor(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-30].deaths)*10/10+"%";
     //
     inf_per_chart = this.doughnutChart("infected-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / population)*1000) / 1000);
+    inf_per_chart.render();
     herd_chart = this.doughnutChart("herd-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / (population*0.7))*1000) / 1000);
+    herd_chart.render();
     fatality_chart = this.doughnutChart("fatality-doughnut-chart", Math.floor((this.all[this.all.length-1].deaths / (this.all[this.all.length-1].confirmed))*100000) / 1000);
+    fatality_chart.render();
     this.allDaily = await this.per_day_data(this.all);
     //
     document.getElementById("daily-infections").innerHTML = this.allDaily[this.allDaily.length-1].confirmed;
@@ -516,12 +519,6 @@ window.onload = function () {
     if (isInView) {
 
       switch (this.id) {
-         case "infected-doughnut-chart": inf_per_chart.render();
-         break;
-         case "herd-doughnut-chart": herd_chart.render();
-         break;
-         case "fatality-doughnut-chart": fatality_chart.render();
-         break;
          case "sex-doughnut-chart": gender_Chart.render();
          break;
          case "female-cases": female_cases_chart.render();
