@@ -55,6 +55,14 @@ class covid {
     return arr2;
   }
 
+  age_gender_dist(arr,arg1=[]){
+    var key = ["0-17","18-39","40-64","65+"]
+    for (var i = 0; i < key.length +1; i++) {
+    arg1.push({y: arr[key[i]], label: key[i]})
+  }
+    return arg1;
+  }
+
   day_data(arr, prev_arr, arr2 =[]) {
     var actualthis = this
     Object.keys(arr).forEach(function(z) {
@@ -396,49 +404,24 @@ window.onload = function () {
 
   covidInst.fetch('https://covid-19-greece.herokuapp.com/gender-age-distribution', async (data) => {
     this.total_age_gender_distribution = await data["total_age_gender_distribution"];
-
     var age_gender_f_cases = [];
-    age_gender_f_cases.push({y: this.total_age_gender_distribution.females.cases["0-17"], label: "0-17"})
-    age_gender_f_cases.push({y: this.total_age_gender_distribution.females.cases["18-39"], label: "18-39"})
-    age_gender_f_cases.push({y: this.total_age_gender_distribution.females.cases["40-64"], label: "40-64"})
-    age_gender_f_cases.push({y: this.total_age_gender_distribution.females.cases["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.females.cases,age_gender_f_cases)
     female_cases_chart = this.ColumnChart("female-cases",age_gender_f_cases)
-
     var age_gender_f_critical = [];
-    age_gender_f_critical.push({y: this.total_age_gender_distribution.females.critical["0-17"], label: "0-17"})
-    age_gender_f_critical.push({y: this.total_age_gender_distribution.females.critical["18-39"], label: "18-39"})
-    age_gender_f_critical.push({y: this.total_age_gender_distribution.females.critical["40-64"], label: "40-64"})
-    age_gender_f_critical.push({y: this.total_age_gender_distribution.females.critical["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.females.critical,age_gender_f_critical)
     female_critical_chart = this.ColumnChart("female-critical",age_gender_f_critical)
-
     var age_gender_f_deaths = [];
-    age_gender_f_deaths.push({y: this.total_age_gender_distribution.females.deaths["0-17"], label: "0-17"})
-    age_gender_f_deaths.push({y: this.total_age_gender_distribution.females.deaths["18-39"], label: "18-39"})
-    age_gender_f_deaths.push({y: this.total_age_gender_distribution.females.deaths["40-64"], label: "40-64"})
-    age_gender_f_deaths.push({y: this.total_age_gender_distribution.females.deaths["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.females.deaths,age_gender_f_deaths)
     female_deaths_chart = this.ColumnChart("female-deaths",age_gender_f_deaths)
-
     var age_gender_m_cases = [];
-    age_gender_m_cases.push({y: this.total_age_gender_distribution.males.cases["0-17"], label: "0-17"})
-    age_gender_m_cases.push({y: this.total_age_gender_distribution.males.cases["18-39"], label: "18-39"})
-    age_gender_m_cases.push({y: this.total_age_gender_distribution.males.cases["40-64"], label: "40-64"})
-    age_gender_m_cases.push({y: this.total_age_gender_distribution.males.cases["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.males.cases,age_gender_m_cases)
     male_cases_chart = this.ColumnChart("male-cases",age_gender_m_cases)
-
     var age_gender_m_critical = [];
-    age_gender_m_critical.push({y: this.total_age_gender_distribution.males.critical["0-17"], label: "0-17"})
-    age_gender_m_critical.push({y: this.total_age_gender_distribution.males.critical["18-39"], label: "18-39"})
-    age_gender_m_critical.push({y: this.total_age_gender_distribution.males.critical["40-64"], label: "40-64"})
-    age_gender_m_critical.push({y: this.total_age_gender_distribution.males.critical["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.males.critical,age_gender_m_critical)
     male_critical_chart = this.ColumnChart("male-critical",age_gender_m_critical)
-
     var age_gender_m_deaths = [];
-    age_gender_m_deaths.push({y: this.total_age_gender_distribution.males.deaths["0-17"], label: "0-17"})
-    age_gender_m_deaths.push({y: this.total_age_gender_distribution.males.deaths["18-39"], label: "18-39"})
-    age_gender_m_deaths.push({y: this.total_age_gender_distribution.males.deaths["40-64"], label: "40-64"})
-    age_gender_m_deaths.push({y: this.total_age_gender_distribution.males.deaths["65+"], label: "65+"})
+    this.age_gender_dist(this.total_age_gender_distribution.males.deaths,age_gender_m_deaths)
     male_deaths_chart = this.ColumnChart("male-deaths",age_gender_m_deaths)
-
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/age-distribution', async (data) => {
     this.age_distribution = await data["age_distribution"];
