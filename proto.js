@@ -55,12 +55,28 @@ class covid {
     return arr2;
   }
 
-  age_gender_dist(arr,arg1=[]){
-    var key = ["0-17","18-39","40-64","65+"]
+  age_gender_dist(arr,arg1=[],key){
     for (var i = 0; i < key.length +1; i++) {
     arg1.push({y: arr[key[i]], label: key[i]})
   }
     return arg1;
+  }
+
+  age_dist(arr,total,arg1=[],key){
+    for (var i = 0; i < key.length; i++) {
+    arg1.push({y: (arr[key[i]]/total)*100, label: key[i]})
+  }
+    return arg1;
+  }
+
+  write_html(arr,arg1){
+    var x = document.getElementById(arg1).innerHTML = arr;
+    return x;
+  }
+
+  write_html_change(arr,arg1,arg2){
+    var x = document.getElementById(arg1).innerHTML = arg2 + Math.floor(arr)*10/10+"%";
+    return x;
   }
 
   day_data(arr, prev_arr, arr2 =[]) {
@@ -386,6 +402,8 @@ var male_deaths_chart;
 var age_cases_chart;
 var age_critical_chart;
 var age_deaths_chart;
+// keys
+var key = ["0-17","18-39","40-64","65+"]
 
 const covidInst = new covid();
 window.onload = function () {
@@ -405,54 +423,43 @@ window.onload = function () {
   covidInst.fetch('https://covid-19-greece.herokuapp.com/gender-age-distribution', async (data) => {
     this.total_age_gender_distribution = await data["total_age_gender_distribution"];
     var age_gender_f_cases = [];
-    this.age_gender_dist(this.total_age_gender_distribution.females.cases,age_gender_f_cases)
+    this.age_gender_dist(this.total_age_gender_distribution.females.cases,age_gender_f_cases,key)
     female_cases_chart = this.ColumnChart("female-cases",age_gender_f_cases)
     var age_gender_f_critical = [];
-    this.age_gender_dist(this.total_age_gender_distribution.females.critical,age_gender_f_critical)
+    this.age_gender_dist(this.total_age_gender_distribution.females.critical,age_gender_f_critical,key)
     female_critical_chart = this.ColumnChart("female-critical",age_gender_f_critical)
     var age_gender_f_deaths = [];
-    this.age_gender_dist(this.total_age_gender_distribution.females.deaths,age_gender_f_deaths)
+    this.age_gender_dist(this.total_age_gender_distribution.females.deaths,age_gender_f_deaths,key)
     female_deaths_chart = this.ColumnChart("female-deaths",age_gender_f_deaths)
     var age_gender_m_cases = [];
-    this.age_gender_dist(this.total_age_gender_distribution.males.cases,age_gender_m_cases)
+    this.age_gender_dist(this.total_age_gender_distribution.males.cases,age_gender_m_cases,key)
     male_cases_chart = this.ColumnChart("male-cases",age_gender_m_cases)
     var age_gender_m_critical = [];
-    this.age_gender_dist(this.total_age_gender_distribution.males.critical,age_gender_m_critical)
+    this.age_gender_dist(this.total_age_gender_distribution.males.critical,age_gender_m_critical,key)
     male_critical_chart = this.ColumnChart("male-critical",age_gender_m_critical)
     var age_gender_m_deaths = [];
-    this.age_gender_dist(this.total_age_gender_distribution.males.deaths,age_gender_m_deaths)
+    this.age_gender_dist(this.total_age_gender_distribution.males.deaths,age_gender_m_deaths,key)
     male_deaths_chart = this.ColumnChart("male-deaths",age_gender_m_deaths)
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/age-distribution', async (data) => {
     this.age_distribution = await data["age_distribution"];
     var age_dist_cases = [];
     var total = this.age_distribution.total_age_groups.cases["0-17"]+this.age_distribution.total_age_groups.cases["18-39"]+this.age_distribution.total_age_groups.cases["40-64"]+this.age_distribution.total_age_groups.cases["65+"]
-    age_dist_cases.push({y: (this.age_distribution.total_age_groups.cases["0-17"]/total)*100, label: "0-17"});
-    age_dist_cases.push({y: (this.age_distribution.total_age_groups.cases["18-39"]/total)*100, label: "18-39"});
-    age_dist_cases.push({y: (this.age_distribution.total_age_groups.cases["40-64"]/total)*100, label: "40-64"});
-    age_dist_cases.push({y: (this.age_distribution.total_age_groups.cases["65+"]/total)*100, label: "65+"});
+    this.age_dist(this.age_distribution.total_age_groups.cases,total,age_dist_cases,key)
     age_cases_chart = this.doughnutSexChart("age-cases-doughnut-chart",age_dist_cases)
-
     var age_dist_critical = [];
     var total = this.age_distribution.total_age_groups.critical["0-17"]+this.age_distribution.total_age_groups.critical["18-39"]+this.age_distribution.total_age_groups.critical["40-64"]+this.age_distribution.total_age_groups.critical["65+"]
-    age_dist_critical.push({y: (this.age_distribution.total_age_groups.critical["0-17"]/total)*100, label: "0-17"});
-    age_dist_critical.push({y: (this.age_distribution.total_age_groups.critical["18-39"]/total)*100, label: "18-39"});
-    age_dist_critical.push({y: (this.age_distribution.total_age_groups.critical["40-64"]/total)*100, label: "40-64"});
-    age_dist_critical.push({y: (this.age_distribution.total_age_groups.critical["65+"]/total)*100, label: "65+"});
+    this.age_dist(this.age_distribution.total_age_groups.critical,total,age_dist_critical,key)
     age_critical_chart = this.doughnutSexChart("age-critical-doughnut-chart",age_dist_critical)
-
     var age_dist_deaths = [];
     var total = this.age_distribution.total_age_groups.deaths["0-17"]+this.age_distribution.total_age_groups.deaths["18-39"]+this.age_distribution.total_age_groups.deaths["40-64"]+this.age_distribution.total_age_groups.deaths["65+"]
-    age_dist_deaths.push({y: (this.age_distribution.total_age_groups.deaths["0-17"]/total)*100, label: "0-17"});
-    age_dist_deaths.push({y: (this.age_distribution.total_age_groups.deaths["18-39"]/total)*100, label: "18-39"});
-    age_dist_deaths.push({y: (this.age_distribution.total_age_groups.deaths["40-64"]/total)*100, label: "40-64"});
-    age_dist_deaths.push({y: (this.age_distribution.total_age_groups.deaths["65+"]/total)*100, label: "65+"});
+    this.age_dist(this.age_distribution.total_age_groups.deaths,total,age_dist_deaths,key)
     age_deaths_chart = this.doughnutSexChart("age-deaths-doughnut-chart",age_dist_deaths)
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/intensive-care', async (data) => {
     this.cases = await data["cases"];
     critical_chart = this.splineArea("daily-critical-infections-area-chart",this.split_data(this.cases,"intensive_care"))
-    document.getElementById("daily-critical-infections").innerHTML = this.cases[this.cases.length-1].intensive_care;
+    this.write_html(this.cases[this.cases.length-1].intensive_care,"daily-critical-infections")
     document.getElementById("daily-critical-infections-14").innerHTML = "Change 14 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-14].intensive_care)*10/10+"%";
     document.getElementById("daily-critical-infections-30").innerHTML = "Change 30 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-30].intensive_care)*10/10+"%";
 
@@ -461,15 +468,16 @@ window.onload = function () {
   covidInst.fetch('https://covid-19-greece.herokuapp.com/all', async (data) => {
     this.all = await this.ignore_early_dates(data.cases)
     //
-    document.getElementById("new-cases").innerHTML = this.all[this.all.length-1].confirmed-this.all[this.all.length-2].confirmed;
+    this.write_html(this.all[this.all.length-1].confirmed-this.all[this.all.length-2].confirmed,"new-cases")
+    this.write_html(this.all[this.all.length-1].confirmed,"total-infections")
+    this.write_html(this.all[this.all.length-1].deaths,"total-deaths")
+
     document.getElementById("last-updated").innerHTML = "Last updated: "+this.all[this.all.length-1].date
 
-    document.getElementById("total-infections").innerHTML = this.all[this.all.length-1].confirmed;
-    document.getElementById("total-infections-14").innerHTML = "Change 14 days: " + Math.floor(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-14].confirmed)*10/10+"%";
-    document.getElementById("total-infections-30").innerHTML = "Change 30 days: " + Math.floor(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-30].confirmed)*10/10+"%";
-    document.getElementById("total-deaths").innerHTML = this.all[this.all.length-1].deaths;
-    document.getElementById("total-deaths-14").innerHTML = "Change 14 days: " + Math.floor(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-14].deaths)*10/10+"%";
-    document.getElementById("total-deaths-30").innerHTML = "Change 30 days: " + Math.floor(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-30].deaths)*10/10+"%";
+    this.write_html_change(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-14].confirmed,"total-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-30].confirmed,"total-infections-30", "Change 30 days: ")
+    this.write_html_change(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-14].deaths,"total-deaths-14", "Change 14 days: ")
+    this.write_html_change(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-30].deaths,"total-deaths-30", "Change 30 days: ")
     //
     inf_per_chart = this.doughnutChart("infected-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / population)*1000) / 1000);
     inf_per_chart.render();
@@ -479,13 +487,13 @@ window.onload = function () {
     fatality_chart.render();
     this.allDaily = await this.per_day_data(this.all);
     //
-    document.getElementById("daily-infections").innerHTML = this.allDaily[this.allDaily.length-1].confirmed;
-    document.getElementById("daily-infections-14").innerHTML = "Change 14 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-14].confirmed)*10/10+"%";
-    document.getElementById("daily-infections-30").innerHTML = "Change 30 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-30].confirmed)*10/10+"%";
-    document.getElementById("daily-infections").innerHTML = this.allDaily[this.allDaily.length-1].confirmed;
-    document.getElementById("daily-deaths").innerHTML = this.allDaily[this.allDaily.length-1].deaths;
-    document.getElementById("daily-deaths-14").innerHTML = "Change 14 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-14].deaths)*10/10+"%";
-    document.getElementById("daily-deaths-30").innerHTML = "Change 30 days: " + Math.floor(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-30].deaths)*10/10+"%";
+    this.write_html(this.allDaily[this.allDaily.length-1].confirmed,"daily-infections")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-14].confirmed,"daily-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-30].confirmed,"daily-infections-30", "Change 30 days: ")
+
+    this.write_html(this.allDaily[this.allDaily.length-1].deaths,"daily-deaths")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-14].deaths,"daily-deaths-14", "Change 14 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-30].deaths,"daily-deaths-30", "Change 30 days: ")
     //
     total_inf = this.splineArea("total-infections-spline-area-chart",this.split_data(this.all,"confirmed"))
     total_deaths = this.splineArea("total-deaths-spline-area-chart",this.split_data(this.all,"deaths"))
