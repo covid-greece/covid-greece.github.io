@@ -56,7 +56,7 @@ class covid {
   }
 
   age_gender_dist(arr,arg1=[],key){
-    for (var i = 0; i < key.length +1; i++) {
+    for (var i = 0; i < key.length; i++) {
     arg1.push({y: arr[key[i]], label: key[i]})
   }
     return arg1;
