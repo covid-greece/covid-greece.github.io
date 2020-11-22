@@ -505,9 +505,9 @@ window.onload = function () {
     this.write_html_change(((this.all[this.all.length-1].deaths-this.all[this.all.length-15].deaths)/this.all[this.all.length-15].deaths)*100,"total-deaths-14", "Change 14 days: ")
     this.write_html_change(((this.all[this.all.length-1].deaths-this.all[this.all.length-31].deaths)/this.all[this.all.length-31].deaths)*100,"total-deaths-30", "Change 30 days: ")
     //
-    inf_per_chart = this.doughnutChart("infected-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / population)*1000) / 1000);
+    inf_per_chart = this.doughnutChart("infected-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / population)*100000) / 1000);
     inf_per_chart.render();
-    herd_chart = this.doughnutChart("herd-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / (population*0.7))*1000) / 1000);
+    herd_chart = this.doughnutChart("herd-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / (population*0.7))*100000) / 1000);
     herd_chart.render();
     fatality_chart = this.doughnutChart("fatality-doughnut-chart", Math.floor((this.all[this.all.length-1].deaths / (this.all[this.all.length-1].confirmed))*100000) / 1000);
     fatality_chart.render();
