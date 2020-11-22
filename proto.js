@@ -487,8 +487,8 @@ window.onload = function () {
     this.cases = await data["cases"];
     critical_chart = this.splineArea("daily-critical-infections-area-chart",this.split_data(this.cases,"intensive_care"))
     this.write_html(this.cases[this.cases.length-1].intensive_care,"daily-critical-infections")
-    this.write_html_change(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-14].intensive_care,"daily-critical-infections-14", "Change 14 days: ")
-    this.write_html_change(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-30].intensive_care,"daily-critical-infections-30", "Change 30 days: ")
+    this.write_html_change(((this.cases[this.cases.length-1].intensive_care-this.cases[this.cases.length-15].intensive_care)/this.cases[this.cases.length-15].intensive_care)*100,"daily-critical-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.cases[this.cases.length-1].intensive_care-this.cases[this.cases.length-31].intensive_care)/this.cases[this.cases.length-31].intensive_care)*100,"daily-critical-infections-30", "Change 30 days: ")
   })
 
   covidInst.fetch('https://covid-19-greece.herokuapp.com/all', async (data) => {
