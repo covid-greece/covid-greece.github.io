@@ -62,6 +62,13 @@ class covid {
     return arg1;
   }
 
+  age_gender_fatality(arr,arr2,arg1=[],key){
+    for (var i = 0; i < key.length; i++) {
+    arg1.push({y: arr2[key[i]]/arr[key[i]]*100, label: key[i]})
+  }
+    return arg1;
+  }
+
   age_dist(arr,total,arg1=[],key){
     for (var i = 0; i < key.length; i++) {
     arg1.push({y: (arr[key[i]]/total)*100, label: key[i]})
@@ -406,10 +413,12 @@ var daily_deaths;
 var female_cases_chart;
 var female_critical_chart;
 var female_deaths_chart;
+var female_fatality_chart;
 // Male
 var male_cases_chart;
 var male_critical_chart;
 var male_deaths_chart;
+var male_fatality_chart;
 // Age
 var age_cases_chart;
 var age_critical_chart;
@@ -443,6 +452,9 @@ window.onload = function () {
     var age_gender_f_deaths = [];
     this.age_gender_dist(this.total_age_gender_distribution.females.deaths,age_gender_f_deaths,key)
     female_deaths_chart = this.ColumnChart("female-deaths",age_gender_f_deaths)
+    var age_gender_f_fatality = [];
+    this.age_gender_fatality(this.total_age_gender_distribution.females.cases,this.total_age_gender_distribution.females.deaths,age_gender_f_fatality,key)
+    female_fatality_chart = this.ColumnChart("female-fatality",age_gender_f_fatality)
     var age_gender_m_cases = [];
     this.age_gender_dist(this.total_age_gender_distribution.males.cases,age_gender_m_cases,key)
     male_cases_chart = this.ColumnChart("male-cases",age_gender_m_cases)
@@ -452,6 +464,9 @@ window.onload = function () {
     var age_gender_m_deaths = [];
     this.age_gender_dist(this.total_age_gender_distribution.males.deaths,age_gender_m_deaths,key)
     male_deaths_chart = this.ColumnChart("male-deaths",age_gender_m_deaths)
+    var age_gender_m_fatality = [];
+    this.age_gender_fatality(this.total_age_gender_distribution.males.cases,this.total_age_gender_distribution.males.deaths,age_gender_m_fatality,key)
+    male_fatality_chart = this.ColumnChart("male-fatality",age_gender_m_fatality)
   }),
   covidInst.fetch('https://covid-19-greece.herokuapp.com/age-distribution', async (data) => {
     this.age_distribution = await data["age_distribution"];
@@ -524,11 +539,15 @@ window.onload = function () {
          break;
          case "female-deaths": female_deaths_chart.render();
          break;
+         case "female-fatality": female_fatality_chart.render();
+         break;
          case "male-cases": male_cases_chart.render();
          break;
          case "male-critical": male_critical_chart.render();
          break;
          case "male-deaths": male_deaths_chart.render();
+         break;
+         case "male-fatality": male_fatality_chart.render();
          break;
          case "age-cases-doughnut-chart": age_cases_chart.render();
          break;

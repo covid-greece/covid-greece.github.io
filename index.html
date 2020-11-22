@@ -62,7 +62,7 @@
 				width: 100%;
 			}
 
-			#users-doughnut-chart, #users-spline-chart, #female-cases, #female-critical, #female-deaths, #male-cases, #male-critical, #male-deaths {
+			#users-doughnut-chart, #users-spline-chart, #female-cases, #female-critical, #female-deaths,#female-fatality, #male-cases, #male-critical, #male-deaths,#male-fatality {
 				height: 250px;
 				margin-top: 2rem;
 				width: 100%;
@@ -155,34 +155,42 @@
       <center><h3>Female Data</h3></center>
       <br>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <h5 class="align-center">Infections</h5>
           <div class="inview" id="female-cases"></div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <h5 class="align-center">Critical</h5>
           <div class="inview" id="female-critical"></div>
         </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h5 class="align-center">Deaths</h5>
         <div class="inview" id="female-deaths"></div>
+      </div>
+      <div class="col-md-3">
+        <h5 class="align-center">Fatality %</h5>
+        <div class="inview" id="female-fatality"></div>
       </div>
     </div>
     <br><br><br>
     <center><h3>Male Data</h3></center>
     <br>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h5 class="align-center">Infections</h5>
         <div class="inview" id="male-cases"></div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h5 class="align-center">Critical</h5>
         <div class="inview" id="male-critical"></div>
       </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <h5 class="align-center">Deaths</h5>
       <div class="inview" id="male-deaths"></div>
+    </div>
+    <div class="col-md-3">
+      <h5 class="align-center">Fatality %</h5>
+      <div class="inview" id="male-fatality"></div>
     </div>
   </div>
   <div class="row">
