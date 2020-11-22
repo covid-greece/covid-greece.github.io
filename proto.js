@@ -485,10 +485,10 @@ window.onload = function () {
 
     document.getElementById("last-updated").innerHTML = "Last updated: "+this.all[this.all.length-1].date
 
-    this.write_html_change(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-14].confirmed,"total-infections-14", "Change 14 days: ")
-    this.write_html_change(((this.all[this.all.length-1].confirmed)*100)/this.all[this.all.length-30].confirmed,"total-infections-30", "Change 30 days: ")
-    this.write_html_change(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-14].deaths,"total-deaths-14", "Change 14 days: ")
-    this.write_html_change(((this.all[this.all.length-1].deaths)*100)/this.all[this.all.length-30].deaths,"total-deaths-30", "Change 30 days: ")
+    this.write_html_change(((this.all[this.all.length-1].confirmed-this.all[this.all.length-15].confirmed)/this.all[this.all.length-15].confirmed)*100,"total-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.all[this.all.length-1].confirmed-this.all[this.all.length-31].confirmed)/this.all[this.all.length-31].confirmed)*100,"total-infections-30", "Change 30 days: ")
+    this.write_html_change(((this.all[this.all.length-1].deaths-this.all[this.all.length-15].deaths)/this.all[this.all.length-15].deaths)*100,"total-deaths-14", "Change 14 days: ")
+    this.write_html_change(((this.all[this.all.length-1].deaths-this.all[this.all.length-31].deaths)/this.all[this.all.length-31].deaths)*100,"total-deaths-30", "Change 30 days: ")
     //
     inf_per_chart = this.doughnutChart("infected-doughnut-chart", Math.floor((this.all[this.all.length-1].confirmed / population)*1000) / 1000);
     inf_per_chart.render();
@@ -499,12 +499,12 @@ window.onload = function () {
     this.allDaily = await this.per_day_data(this.all);
     //
     this.write_html(this.allDaily[this.allDaily.length-1].confirmed,"daily-infections")
-    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-14].confirmed,"daily-infections-14", "Change 14 days: ")
-    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed)*100)/this.allDaily[this.allDaily.length-30].confirmed,"daily-infections-30", "Change 30 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed-this.allDaily[this.allDaily.length-15].confirmed)/this.allDaily[this.allDaily.length-15].confirmed)*100,"daily-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].confirmed-this.allDaily[this.allDaily.length-31].confirmed)/this.allDaily[this.allDaily.length-31].confirmed)*100,"daily-infections-30", "Change 30 days: ")
 
     this.write_html(this.allDaily[this.allDaily.length-1].deaths,"daily-deaths")
-    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-14].deaths,"daily-deaths-14", "Change 14 days: ")
-    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths)*100)/this.allDaily[this.allDaily.length-30].deaths,"daily-deaths-30", "Change 30 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths-this.allDaily[this.allDaily.length-15].deaths)/this.allDaily[this.allDaily.length-15].deaths)*100,"daily-deaths-14", "Change 14 days: ")
+    this.write_html_change(((this.allDaily[this.allDaily.length-1].deaths-this.allDaily[this.allDaily.length-31].deaths)/this.allDaily[this.allDaily.length-31].deaths)*100,"daily-deaths-30", "Change 30 days: ")
     //
     total_inf = this.splineArea("total-infections-spline-area-chart",this.split_data(this.all,"confirmed"))
     total_deaths = this.splineArea("total-deaths-spline-area-chart",this.split_data(this.all,"deaths"))
