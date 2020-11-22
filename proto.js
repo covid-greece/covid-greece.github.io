@@ -75,7 +75,15 @@ class covid {
   }
 
   write_html_change(arr,arg1,arg2){
-    var x = document.getElementById(arg1).innerHTML = arg2 + Math.floor(arr)*10/10+"%";
+    var up = "<i class='fa fa-arrow-circle-o-up'></i>";
+    var down = "<i class='fa fa-arrow-circle-o-down'></i>";
+    if (Math.floor(arr)>=0){
+      var x = document.getElementById(arg1).innerHTML = arg2 + Math.floor(arr)*10/10+"% "+up;
+
+    }
+    else if(Math.floor(arr)<0){
+      var x = document.getElementById(arg1).innerHTML = arg2 + Math.floor(arr)*10/10+"% "+down;
+    }
     return x;
   }
 
@@ -127,7 +135,7 @@ class covid {
       },
       data: [{
 		type: "doughnut",
-    indexLabelFontSize: 10,
+    indexLabelFontSize: 13,
     indexLabelFontColor: "#fff",
 		startAngle: 240,
 		yValueFormatString: "##0.00\"%\"",
@@ -180,15 +188,15 @@ class covid {
         tickThickness: 0
       },
       axisY: {
-        gridThickness: 0,
-        lineThickness: 0,
-        tickThickness: 0,
-        valueFormatString: " "
-
+        labelFontColor: "#f7f6f6",
+        gridThickness: 1,
+        lineThickness: 1,
+        tickThickness: 1,
       },
 
       data: [
         {
+          bevelEnabled: true,
           color: "#424242",
           type: "column",
           dataPoints: dataPoints
@@ -201,20 +209,24 @@ class covid {
 
     return new CanvasJS.Chart(id, {
       animationEnabled: true,
+      zoomEnabled: true,
       backgroundColor: "transparent",
       axisX: {
         gridThickness: 0,
+        interval: 30,
+        intervalType: "day",
         lineThickness: 0,
         minimum: dataPoints[0].x,
         maximum: dataPoints[dataPoints.length-1].x,
-        tickLength: 0,
-        valueFormatString: " "
+        tickLength: 10,
+        labelFontColor: "white",
+        labelAngle: -40
       },
       axisY: {
-        gridThickness: 0,
-        lineThickness: 0,
-        tickLength: 0,
-        valueFormatString: " "
+        labelFontColor: "#f7f6f6",
+        gridThickness: 1,
+        lineThickness: 1,
+        tickThickness: 1,
       },
       toolTip: {
         backgroundColor: "#ffffff",
@@ -310,15 +322,15 @@ class covid {
         tickThickness: 0
       },
       axisY: {
-        gridThickness: 0,
-        lineThickness: 0,
-        tickThickness: 0,
-        valueFormatString: " "
-
+        labelFontColor: "#f7f6f6",
+        gridThickness: 1,
+        lineThickness: 1,
+        tickThickness: 1,
       },
 
       data: [
         {
+          bevelEnabled: true,
           color: "#424242",
           type: "column",
           dataPoints: dataPoints
@@ -460,9 +472,8 @@ window.onload = function () {
     this.cases = await data["cases"];
     critical_chart = this.splineArea("daily-critical-infections-area-chart",this.split_data(this.cases,"intensive_care"))
     this.write_html(this.cases[this.cases.length-1].intensive_care,"daily-critical-infections")
-    document.getElementById("daily-critical-infections-14").innerHTML = "Change 14 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-14].intensive_care)*10/10+"%";
-    document.getElementById("daily-critical-infections-30").innerHTML = "Change 30 days: " + Math.floor(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-30].intensive_care)*10/10+"%";
-
+    this.write_html_change(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-14].intensive_care,"daily-critical-infections-14", "Change 14 days: ")
+    this.write_html_change(((this.cases[this.cases.length-1].intensive_care)*100)/this.cases[this.cases.length-30].intensive_care,"daily-critical-infections-30", "Change 30 days: ")
   })
 
   covidInst.fetch('https://covid-19-greece.herokuapp.com/all', async (data) => {
